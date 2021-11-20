@@ -29,7 +29,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float PawnHealth = 100.f;
 
-private:
+protected:
 	UPROPERTY(VisibleAnywhere, Category = "ComponentPointers", BlueprintReadOnly, meta = (AllowPrivateAccess = "true" ))
 	class UCapsuleComponent* CapsuleComp = nullptr;
 
