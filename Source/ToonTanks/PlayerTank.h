@@ -16,6 +16,9 @@ class TOONTANKS_API APlayerTank : public ABaseTank
 public:
 	APlayerTank();
 	void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	virtual void BeginPlay() override;
 private:
 	UPROPERTY(VisibleAnywhere, Category = "ComponentPointers")
 		class USpringArmComponent* TankCameraArm;
@@ -23,8 +26,10 @@ private:
 		class UCameraComponent* CameraComponent;
 	void Move(float Value);
 	void Turn(float Value);
+	virtual void Fire() override;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float TankSpeed = 10.f;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float TurretTraversal = 10.f;
+	APlayerController* PlayerControllerRef;
 };

@@ -18,20 +18,18 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		float TurretRange = 100.f;
+	virtual void Fire();
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float PawnHealth = 100.f;
 
 protected:
-	UPROPERTY(VisibleAnywhere, Category = "ComponentPointers", BlueprintReadOnly, meta = (AllowPrivateAccess = "true" ))
-	class UCapsuleComponent* CapsuleComp = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "ComponentPointers", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		class UCapsuleComponent* CapsuleComp = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = "ComponentPointers", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UStaticMeshComponent* BaseMesh = nullptr;
@@ -41,4 +39,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "ComponentPointers", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		USceneComponent* ProjectileSpawnPoint = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+		TSubclassOf<class ABullet> BulletClass;
+	void RotateTurret(FVector LookAtTarget);
 };

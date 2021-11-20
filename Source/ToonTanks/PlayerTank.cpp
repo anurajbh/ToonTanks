@@ -5,6 +5,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
+#define OUT
 APlayerTank::APlayerTank()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -12,9 +14,17 @@ APlayerTank::APlayerTank()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	CameraComponent->SetupAttachment(TankCameraArm);
 }
+void APlayerTank::BeginPlay()
+{
+	Super::BeginPlay();
+
+	PlayerControllerRef = Cast<APlayerController>(GetController());
+}
+
 void APlayerTank::Move(float Value)
 {
 	AddActorLocalOffset(FVector(Value * TankSpeed * UGameplayStatics::GetWorldDeltaSeconds(this), 0.f, 0.f), true);
+	GetController();
 }
 void APlayerTank::Turn(float Value)
 {
@@ -27,4 +37,20 @@ void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &APlayerTank::Move);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &APlayerTank::Turn);
+	PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &APlayerTank::Fire);
+}
+void APlayerTank::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (PlayerControllerRef)
+	{
+		FHitResult LineTraceResult;
+		PlayerControllerRef->GetHitResultUnderCursor(ECC_Visibility, false, OUT LineTraceResult);
+		DrawDebugSphere(GetWorld(), LineTraceResult.ImpactPoint, 20.f, 12, FColor(255, 36, 0));
+		RotateTurret(LineTraceResult.ImpactPoint);
+	}
+}
+void APlayerTank::Fire()
+{
+	Super::Fire();
 }

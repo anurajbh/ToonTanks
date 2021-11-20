@@ -3,10 +3,11 @@
 
 #include "BaseTank.h"
 #include "Components/CapsuleComponent.h"
+#include "Bullet.h"
 // Sets default values
 ABaseTank::ABaseTank()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollider"));
 	RootComponent = CapsuleComp;
@@ -23,17 +24,13 @@ void ABaseTank::BeginPlay()
 {
 	Super::BeginPlay();
 }
-
-// Called every frame
-void ABaseTank::Tick(float DeltaTime)
+void ABaseTank::RotateTurret(FVector LookAtTarget)
 {
-	Super::Tick(DeltaTime);
-
+	FVector ToTarget = LookAtTarget - TurretMesh->GetComponentLocation();
+	FRotator LookAtRotation = FRotator(0.f, ToTarget.Rotation().Yaw, 0.f);
+	TurretMesh->SetWorldRotation(LookAtRotation);
 }
-
-// Called to bind functionality to input
-void ABaseTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ABaseTank::Fire()
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	GetWorld()->SpawnActor<ABullet>(BulletClass, ProjectileSpawnPoint->GetComponentLocation(), ProjectileSpawnPoint->GetComponentRotation());
 }
