@@ -6,6 +6,7 @@
 #include "PlayerTank.h"
 #include "EnemyTurret.h"
 #include "ToonTanksPlayerController.h"
+#define OUT
 void AToonTanksGameMode::ActorDied(AActor* DeadActor)
 {
 	if (DeadActor == PlayerCharacter)
@@ -15,10 +16,16 @@ void AToonTanksGameMode::ActorDied(AActor* DeadActor)
 		{
 			PlayerController->SetPlayerEnabledState(false);
 		}
+		GameOver(false);
 	}
 	else if (AEnemyTurret* DestroyedTurret = Cast<AEnemyTurret>(DeadActor))
 	{
 		DestroyedTurret->HandleDestruction();
+		NumberOfTowers--;
+		if (NumberOfTowers <= 0)
+		{
+			GameOver(true);
+		}
 	}
 }
 void AToonTanksGameMode::BeginPlay()
@@ -30,8 +37,19 @@ void AToonTanksGameMode::HandleGameStart()
 {
 	PlayerCharacter = Cast<APlayerTank>(UGameplayStatics::GetPlayerPawn(this, 0));
 	PlayerController = Cast<AToonTanksPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	StartGame();
 	if (PlayerController)
 	{
 		PlayerController->SetPlayerEnabledState(false);
+		FTimerHandle PlayerEnableTimerHandle;
+		FTimerDelegate PlayerEnableTimerDelegate = FTimerDelegate::CreateUObject(PlayerController, &AToonTanksPlayerController::SetPlayerEnabledState, true);
+		GetWorldTimerManager().SetTimer(PlayerEnableTimerHandle, PlayerEnableTimerDelegate, StartDelay, false);
+		NumberOfTowers = GetNumberOfTowers();
 	}
+}
+int32 AToonTanksGameMode::GetNumberOfTowers()
+{
+	TArray<AActor*> ArrayOfTowers;
+	UGameplayStatics::GetAllActorsOfClass(this, AEnemyTurret::StaticClass(), OUT ArrayOfTowers);
+	return ArrayOfTowers.Num();
 }
