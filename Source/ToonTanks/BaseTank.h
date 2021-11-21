@@ -42,5 +42,9 @@ protected:
 		USceneComponent* ProjectileSpawnPoint = nullptr;
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 		TSubclassOf<class ABullet> BulletClass;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		class UParticleSystem* DeathTrail;
 	void RotateTurret(FVector LookAtTarget);
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		class USoundBase* DeathSound;
 };

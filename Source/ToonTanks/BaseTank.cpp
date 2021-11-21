@@ -4,6 +4,7 @@
 #include "BaseTank.h"
 #include "Components/CapsuleComponent.h"
 #include "Bullet.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 ABaseTank::ABaseTank()
 {
@@ -21,7 +22,14 @@ ABaseTank::ABaseTank()
 //visual/sound effects when actor dies
 void ABaseTank::HandleDestruction()
 {
-
+	if (DeathTrail)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, DeathTrail, GetActorLocation(), GetActorRotation());
+	}
+	if (DeathSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	}
 }
 // Called when the game starts or when spawned
 void ABaseTank::BeginPlay()

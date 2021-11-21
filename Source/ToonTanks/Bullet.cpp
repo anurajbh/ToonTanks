@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 // Sets default values
 ABullet::ABullet()
 {
@@ -14,6 +15,8 @@ ABullet::ABullet()
 	BulletProjectile = CreateDefaultSubobject<UProjectileMovementComponent>("BulletProjectile");
 	BulletProjectile->InitialSpeed = InitSpeed;
 	BulletProjectile->MaxSpeed = MaxSpeed;
+	BulletTrail = CreateDefaultSubobject<UParticleSystemComponent>("BulletTrail");
+	BulletTrail->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -21,6 +24,10 @@ void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
 	BulletMesh->OnComponentHit.AddDynamic(this, &ABullet::OnHit);
+	if (LaunchSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation());
+	}
 }
 
 // Called every frame
@@ -34,13 +41,22 @@ void ABullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitive
 	AActor* MyOwner = GetOwner();
 	if (!MyOwner)
 	{
+		Destroy();
 		return;
 	}
 	if (OtherActor && OtherActor != this && OtherActor != MyOwner)
 	{
 		AController* DamageInstigator = MyOwner->GetInstigator<AController>();
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, DamageInstigator, this, UDamageType::StaticClass());
-		Destroy();
+		if (BulletExplosion)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(this, BulletExplosion, GetActorLocation(), GetActorRotation());
+		}
+		if (HitSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+		}
 	}
+	Destroy();
 }
 
