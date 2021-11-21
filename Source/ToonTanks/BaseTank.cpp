@@ -32,5 +32,6 @@ void ABaseTank::RotateTurret(FVector LookAtTarget)
 }
 void ABaseTank::Fire()
 {
-	GetWorld()->SpawnActor<ABullet>(BulletClass, ProjectileSpawnPoint->GetComponentLocation(), ProjectileSpawnPoint->GetComponentRotation());
+	ABullet* SpawnedProjectile = GetWorld()->SpawnActor<ABullet>(BulletClass, ProjectileSpawnPoint->GetComponentLocation(), ProjectileSpawnPoint->GetComponentRotation());
+	SpawnedProjectile->SetOwner(this);
 }

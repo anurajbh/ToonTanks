@@ -13,6 +13,7 @@ APlayerTank::APlayerTank()
 	TankCameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	CameraComponent->SetupAttachment(TankCameraArm);
+	TankCameraArm->SetupAttachment(BaseMesh);
 }
 void APlayerTank::BeginPlay()
 {
