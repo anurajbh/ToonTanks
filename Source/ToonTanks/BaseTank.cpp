@@ -18,7 +18,11 @@ ABaseTank::ABaseTank()
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint"));
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
 }
+//visual/sound effects when actor dies
+void ABaseTank::HandleDestruction()
+{
 
+}
 // Called when the game starts or when spawned
 void ABaseTank::BeginPlay()
 {

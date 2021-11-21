@@ -19,6 +19,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual void BeginPlay() override;
+	void HandleDestruction();
+	APlayerController* GetTankPlayerController() const 
+	{
+		return TankPlayerController;
+	}
 private:
 	UPROPERTY(VisibleAnywhere, Category = "ComponentPointers")
 		class USpringArmComponent* TankCameraArm;
@@ -31,5 +36,5 @@ private:
 		float TankSpeed = 10.f;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float TurretTraversal = 10.f;
-	APlayerController* PlayerControllerRef;
+	APlayerController* TankPlayerController;
 };

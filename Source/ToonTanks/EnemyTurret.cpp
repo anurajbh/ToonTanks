@@ -18,6 +18,11 @@ void AEnemyTurret::Tick(float DeltaTime)
 	}
 	//Fire at tank if so
 }
+void AEnemyTurret::HandleDestruction()
+{
+	Super::HandleDestruction();
+	Destroy();
+}
 void AEnemyTurret::BeginPlay()
 {
 	Super::BeginPlay();

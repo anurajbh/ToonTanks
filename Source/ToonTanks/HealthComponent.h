@@ -30,5 +30,6 @@ private:
 	float CurrentHealth = 0.f;
 	UFUNCTION()
 	void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* Instigator, AActor* DamageCauser);
+	class AToonTanksGameMode* ToonTanksGM = nullptr;
 		
 };

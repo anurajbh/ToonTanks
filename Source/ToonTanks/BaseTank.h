@@ -26,6 +26,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float PawnHealth = 100.f;
+	void HandleDestruction();
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "ComponentPointers", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

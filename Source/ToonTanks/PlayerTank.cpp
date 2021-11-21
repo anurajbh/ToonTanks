@@ -19,7 +19,7 @@ void APlayerTank::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PlayerControllerRef = Cast<APlayerController>(GetController());
+	TankPlayerController = Cast<APlayerController>(GetController());
 }
 
 void APlayerTank::Move(float Value)
@@ -43,10 +43,10 @@ void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 void APlayerTank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (PlayerControllerRef)
+	if (TankPlayerController)
 	{
 		FHitResult LineTraceResult;
-		PlayerControllerRef->GetHitResultUnderCursor(ECC_Visibility, false, OUT LineTraceResult);
+		TankPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, OUT LineTraceResult);
 		DrawDebugSphere(GetWorld(), LineTraceResult.ImpactPoint, 20.f, 12, FColor(255, 36, 0));
 		RotateTurret(LineTraceResult.ImpactPoint);
 	}
@@ -54,4 +54,10 @@ void APlayerTank::Tick(float DeltaTime)
 void APlayerTank::Fire()
 {
 	Super::Fire();
+}
+void APlayerTank::HandleDestruction()
+{
+	Super::HandleDestruction();
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
 }

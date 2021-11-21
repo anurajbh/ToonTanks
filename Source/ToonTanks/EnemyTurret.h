@@ -15,6 +15,7 @@ class TOONTANKS_API AEnemyTurret : public ABaseTank
 	GENERATED_BODY()
 public:
 	virtual void Tick(float DeltaTime) override;
+	void HandleDestruction();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
