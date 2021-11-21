@@ -32,4 +32,6 @@ private:
 		float InitSpeed = 20.f;
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 		float MaxSpeed = 100.f;
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };
