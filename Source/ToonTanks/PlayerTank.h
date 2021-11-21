@@ -24,6 +24,7 @@ public:
 	{
 		return TankPlayerController;
 	}
+	bool bIsAlive = true;
 private:
 	UPROPERTY(VisibleAnywhere, Category = "ComponentPointers")
 		class USpringArmComponent* TankCameraArm;

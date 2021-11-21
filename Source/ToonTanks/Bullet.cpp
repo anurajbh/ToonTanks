@@ -56,6 +56,10 @@ void ABullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitive
 		{
 			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
 		}
+		if (HitCameraShakeClass)
+		{
+			GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(HitCameraShakeClass);
+		}
 	}
 	Destroy();
 }

@@ -31,7 +31,11 @@ void AEnemyTurret::BeginPlay()
 }
 void AEnemyTurret::CheckForFiring()
 {
-	if (CheckIfPlayerIsInRange())
+	if (PlayerCharacter == nullptr)
+	{
+		return;
+	}
+	if (CheckIfPlayerIsInRange() && PlayerCharacter->bIsAlive)
 	{
 		Fire();
 	}
